@@ -18,6 +18,7 @@ def insertInfo(info):
             attributes = ", ".join([row[0] for row in fetchall_info])
 
         for set in info[table]:
+            print("INSERT INTO " + table + " (" + attributes + ") VALUES (" + set + ")")
             cursor.execute("INSERT INTO " + table + " (" + attributes + ") VALUES (" + set + ")")
 
 
@@ -25,7 +26,7 @@ def getInfo():
     info = {}
     current_table = None
 
-    with open("champions_info.txt", "r") as fh:
+    with open("data/champions_info.txt", "r") as fh:
         lines = fh.readlines()
 
     for line in lines:

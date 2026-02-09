@@ -54,7 +54,7 @@ Champions
 'Jayce','male','both','mana','2012'
 'Jhin','male','ranged','mana','2016'
 'Jinx','female','ranged','mana','2013'
-'K''Sante','male,'melee','mana','2022'
+'K''Sante','male','melee','mana','2022'
 'Kai''Sa','female','ranged','mana','2018'
 'Kalista','female','ranged','mana','2014'
 'Karma','female','ranged','mana','2011'
