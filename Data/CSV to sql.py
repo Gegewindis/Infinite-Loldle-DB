@@ -1,11 +1,15 @@
 import mysql.connector
 
-mydb = mysql.connector.connect(host="localhost", user="root", passwd="Pellerasmus3")
+# Arguments
+filepath = "data/champions_info.txt"
+password = "georgeadrian2005@"
+dbName = "infLoldle"
+
+mydb = mysql.connector.connect(host="localhost", user="root", passwd=password)
 
 cursor = mydb.cursor()
 
-cursor.execute("USE infloldle")
-
+cursor.execute("USE " + dbName)
 
 def insertInfo(info):
     for table in info.keys():
@@ -26,7 +30,7 @@ def getInfo():
     info = {}
     current_table = None
 
-    with open("data/regions_info.txt", "r") as fh:
+    with open(filepath, "r") as fh:
         lines = fh.readlines()
 
     for line in lines:
