@@ -1,7 +1,7 @@
 import mysql.connector
 
 # Arguments
-filepath = "data/champions_info.txt"
+filepath = "data/abilities_info.txt"
 password = "georgeadrian2005@"
 dbName = "infLoldle"
 

@@ -11,7 +11,7 @@ CREATE TABLE
 
 CREATE TABLE
     Abilities (
-        name VARCHAR(50),
+        name VARCHAR(30),
         type VARCHAR(20), --int
         champion VARCHAR(20),
         PRIMARY KEY (name),
