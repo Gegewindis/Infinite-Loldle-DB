@@ -11,7 +11,7 @@ CREATE TABLE
 
 CREATE TABLE
     Abilities (
-        name VARCHAR(20),
+        name VARCHAR(50),
         type VARCHAR(20), --int
         champion VARCHAR(20),
         PRIMARY KEY (name),
@@ -44,7 +44,7 @@ CREATE TABLE
 CREATE TABLE
     ChampPositions (
         champName VARCHAR(20),
-        position VARCHAR(5),
+        position VARCHAR(20),
         PRIMARY KEY (champName, position),
         FOREIGN KEY (champName) REFERENCES Champions (name)
     );
