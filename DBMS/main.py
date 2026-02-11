@@ -104,17 +104,52 @@ class App(customtkinter.CTk):
     def main_insert_button_callback(self):
         self.insert_popup_window = customtkinter.CTkToplevel(self)
         self.insert_popup_window.title("Modify")
-        self.insert_popup_window.geometry("300x100")
+        self.insert_popup_window.geometry("300x500")
         self.insert_popup_window.transient(self)
 
-        for element in self.selected_table_header:
-            label = customtkinter.CTkLabel(self.insert_popup_window, text=element[0])
-            label.pack(side="left", padx=5)
+        frame = customtkinter.CTkScrollableFrame(self.insert_popup_window)
+        frame.pack(fill="both", expand=True)
 
+        self.insert_entries = []
+        for i in range(len(self.selected_table_header)):
+            label = customtkinter.CTkLabel(frame, text=self.selected_table_header[i][0])
+            entry = customtkinter.CTkEntry(frame, placeholder_text="input...")
+            self.insert_entries.append(entry)
+            space_frame = customtkinter.CTkFrame(frame, height=30)
+            frame.grid_columnconfigure(0, weight=1)
+            frame.grid_rowconfigure(0, weight=1)
+            label.grid(row=i * 3, sticky="nsew", pady=10)
+            entry.grid(row=1 + i * 3, sticky="nsew", padx=60)
+            space_frame.grid(row=2 + i * 3, sticky="nsew")
 
+        self.insert_submit = customtkinter.CTkButton(frame, text="Submit", command=self.insert, width=80)
+        self.insert_submit.grid(row= i * 3 + 2, pady=20)
+                                                     
+                                                  
+    def insert(self):
+        new_data = []
+        for entry in self.insert_entries:
+            new_data.append((entry.get()))
 
+        attributes = []
+        for attr in self.selected_table_header:
+            attributes.append(attr[0])
 
+        self.cursor.execute("INSERT INTO " + self.selected_table.get() + " (" + ", ".join(attributes) + ") VALUES (" + ", ".join(new_data) + ")")
+        self.selected_table_data.append(tuple(new_data))
 
+        # CREATES ONE AT THE BOTTOM INSTEAD OF RELOADING
+        # for i in range(len(self.selected_table_data[0])):
+        #         label = Label(self.tables_frame, width=self.selected_table_header[i][1], text=self.selected_table_data[len(self.selected_table_data) - 1][i], relief="solid")
+        #         label.grid(row=len(self.selected_table_data), column=i)
+        #         label.bind("<Button-1>", self.on_label_click)
+
+        self.mydb.commit()
+        self.insert_popup_window.destroy()
+
+        self.main_dropdown_callback(self.selected_table.get())
+
+        
     def main_modify_button_callback(self):
         self.modify_popup_window = customtkinter.CTkToplevel(self)
         self.modify_popup_window.title("Modify")
@@ -135,9 +170,40 @@ class App(customtkinter.CTk):
         self.modify_popup_window.destroy()
 
 
-
     def main_remove_button_callback(self):
-        print("remove")
+        self.remove_popup_window = customtkinter.CTkToplevel(self)
+        self.remove_popup_window.title("Modify")
+        self.remove_popup_window.geometry("300x100")
+        self.remove_popup_window.transient(self)
+
+        label = customtkinter.CTkLabel(self.remove_popup_window, text="Whats the primary key?")
+        label.pack(pady=10)
+
+        self.remove_input_entry = customtkinter.CTkEntry(self.remove_popup_window, placeholder_text="input...", width=172)
+        self.remove_input_entry.bind("<Return>", self.remove)
+        self.remove_input_entry.pack()
+
+
+    def remove(self, event):
+        for i in range(len(self.selected_table_header)):
+            if self.selected_table_header[i][2] == "#25709E": #PRIMARY KEY COLOR, might change
+                key = self.selected_table_header[i][0]
+                break
+
+        self.cursor.execute("DELETE FROM " + self.selected_table.get() + " WHERE " + key + " = '" + self.remove_input_entry.get() + "'")
+
+        # COLORS THE REMOVED ONE INSTEAD OF RELOADING
+        # for j in range(len(self.selected_table_data)):
+        #     print(self.selected_table_data[j][i])
+        #     if self.selected_table_data[j][i] == self.remove_input_entry.get():
+        #        for widget in self.tables_frame.grid_slaves(row=j + 1):
+        #            widget.config(bg="#471323")
+
+        self.mydb.commit()
+        self.remove_popup_window.destroy()
+
+        self.main_dropdown_callback(self.selected_table.get())
+
 
 
     def main_dropdown_callback(self, choice):
