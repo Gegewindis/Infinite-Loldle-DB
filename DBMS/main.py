@@ -11,6 +11,7 @@ class App(customtkinter.CTk):
         super().__init__()
         self.geometry("1280x720")
         self.title("Infinite Loldle WBMS")
+        self.selected_widget = None
 
         # Fonts
         self.big_text_font = customtkinter.CTkFont(family="Segoe UI", size=20, weight="normal")
@@ -20,8 +21,8 @@ class App(customtkinter.CTk):
         # Frames
         self.login_screen = customtkinter.CTkFrame(self, fg_color="transparent")
         self.main_screen = customtkinter.CTkFrame(self, fg_color="transparent")
-        self.tables_frame = customtkinter.CTkFrame(self.main_screen, fg_color="#008DD5")
-        self.buttons_frame = customtkinter.CTkFrame(self.main_screen, width=300)
+        self.tables_frame = customtkinter.CTkScrollableFrame(self.main_screen, fg_color="#2f2f2f")
+        self.buttons_frame = customtkinter.CTkFrame(self.main_screen, width=300, )
         self.buttons_frame.pack(anchor="w", side='left', fill="both")
         self.tables_frame.pack(anchor="e", side='right', expand=True, fill="both")
 
@@ -83,8 +84,8 @@ class App(customtkinter.CTk):
             self.main_select_text.pack(pady=(50, 0), padx=20)
             self.main_dropdown.pack(pady=(10, 0), padx=20)
             self.main_insert_button.pack(pady=(100, 0), padx=20)
-            self.main_modify_button.pack(pady=(30, 0), padx=20)
             self.main_remove_button.pack(pady=(30, 0), padx=20)
+            self.main_modify_button.pack(pady=(30, 0), padx=20)
 
             # Switch screen
             self.login_screen.pack_forget()
@@ -93,50 +94,104 @@ class App(customtkinter.CTk):
         except mysql.connector.Error as err:
             print("Error:", err)
     
+
     def main_logout_button_callback(self):
             # Switch screen
             self.main_screen.pack_forget()
             self.login_screen.pack(fill="both", expand=True)
 
+
     def main_insert_button_callback(self):
-        print("insert")
+        self.insert_popup_window = customtkinter.CTkToplevel(self)
+        self.insert_popup_window.title("Modify")
+        self.insert_popup_window.geometry("300x100")
+        self.insert_popup_window.transient(self)
+
+        for element in self.selected_table_header:
+            label = customtkinter.CTkLabel(self.insert_popup_window, text=element[0])
+            label.pack(side="left", padx=5)
+
+
+
+
 
     def main_modify_button_callback(self):
-        print("modify")
+        self.modify_popup_window = customtkinter.CTkToplevel(self)
+        self.modify_popup_window.title("Modify")
+        self.modify_popup_window.geometry("300x100")
+        self.modify_popup_window.transient(self)
+
+        label = customtkinter.CTkLabel(self.modify_popup_window, text="Change it to")
+        label.pack(pady=10)
+
+        self.modify_input_entry = customtkinter.CTkEntry(self.modify_popup_window, placeholder_text="input...", width=172)
+        self.modify_input_entry.bind("<Return>", self.modify)
+        self.modify_input_entry.pack()
+
+    def modify(self, event):
+        self.cursor.execute("UPDATE " + self.selected_table.get() + " SET " + self.selected_table_header[self.selected_widget['column']][0] + " = '" + self.modify_input_entry.get() + "' WHERE " + self.selected_table_header[0][0] + " = '" + self.selected_table_data[self.selected_widget['row']][0] + "'")
+        self.selected_widget["widget"].config(text=self.modify_input_entry.get())
+        self.mydb.commit()
+        self.modify_popup_window.destroy()
+
+
 
     def main_remove_button_callback(self):
         print("remove")
 
+
     def main_dropdown_callback(self, choice):
+        for widget in self.tables_frame.winfo_children():
+            widget.destroy()
+
         if choice == "None":
             return
-        
-        header = []
+
+        self.selected_table_header = []
+
         self.cursor.execute("DESCRIBE " + self.selected_table.get())
-
-
-        # Gets the column names and their correct lenght
         columnData = self.cursor.fetchall()
+
         for column in columnData:
             self.cursor.execute("SELECT MAX(CHAR_LENGTH(" + column[0] + ")) FROM " + self.selected_table.get() + ";")
             length = self.cursor.fetchall()[0][0]
-            header.append((column[0], length))
+            if column[3] == "PRI":
+                color = "#25709E"
+            elif column[3] == '':
+                color = "#FFFFFF"
+            else:
+                color = "#86213F"
 
-        print(header)
+            self.selected_table_header.append((column[0], length, color))
 
-        self.cursor.execute('SELECT * FROM ' + choice)
-        data = self.cursor.fetchall()
-        current_col_amount = len(data[0])
-        current_row_amount = len(data)
+        self.cursor.execute("SELECT * FROM " + choice)
+        self.selected_table_data = self.cursor.fetchall()
+
+        current_col_amount = len(self.selected_table_data[0])
+        current_row_amount = len(self.selected_table_data)
 
         for i in range(current_col_amount):
+            label = Label(self.tables_frame, width=self.selected_table_header[i][1], text=self.selected_table_header[i][0], relief="solid", bg=self.selected_table_header[i][2])
+            label.grid(row=0, column=i)
 
             for j in range(current_row_amount):
-                label = Label(self.tables_frame, width=header[i][1], text=data[j][i], relief="solid")
-                label.grid(row=j, column=i)
+                label = Label(self.tables_frame, width=self.selected_table_header[i][1], text=self.selected_table_data[j][i], relief="solid")
+                label.grid(row=j + 1, column=i)
+                label.bind("<Button-1>", self.on_label_click)
 
 
-        print(current_col_amount, current_row_amount)
+    def on_label_click(self, event):
+        if self.selected_widget:
+            self.selected_widget["widget"].config(bg="#FFFFFF")
+        else:
+            self.selected_widget = {}
+
+        self.selected_widget["widget"] = event.widget
+        info = self.selected_widget["widget"].grid_info()
+        self.selected_widget["row"] = info["row"] - 1
+        self.selected_widget["column"] = info["column"]
+        self.selected_widget["widget"].config(bg="lightblue")
+
 
 app = App()
 app.mainloop()
