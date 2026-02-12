@@ -44,7 +44,7 @@ CREATE TABLE
 CREATE TABLE
     ChampPositions (
         champName VARCHAR(20),
-        position VARCHAR(20),
+        position VARCHAR(5),
         PRIMARY KEY (champName, position),
         FOREIGN KEY (champName) REFERENCES Champions (name)
     );

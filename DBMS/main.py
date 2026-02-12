@@ -10,7 +10,7 @@ class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
         self.geometry("1280x720")
-        self.title("Infinite Loldle WBMS")
+        self.title("Infinite Loldle DB tool")
         self.selected_widget = None
 
         # Fonts
@@ -209,6 +209,7 @@ class App(customtkinter.CTk):
     def main_dropdown_callback(self, choice):
         for widget in self.tables_frame.winfo_children():
             widget.destroy()
+            self.selected_widget = {}
 
         if choice == "None":
             return
@@ -221,6 +222,10 @@ class App(customtkinter.CTk):
         for column in columnData:
             self.cursor.execute("SELECT MAX(CHAR_LENGTH(" + column[0] + ")) FROM " + self.selected_table.get() + ";")
             length = self.cursor.fetchall()[0][0]
+            if len(column[0]) > length:
+                length = len(column[0])
+
+
             if column[3] == "PRI":
                 color = "#25709E"
             elif column[3] == '':
