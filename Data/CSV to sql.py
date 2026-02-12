@@ -26,7 +26,7 @@ def getInfo():
     info = {}
     current_table = None
 
-    with open("data/regions_info.txt", "r") as fh:
+    with open("data/quotes_info.txt", "r") as fh:
         lines = fh.readlines()
 
     for line in lines:

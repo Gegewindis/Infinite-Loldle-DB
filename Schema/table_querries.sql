@@ -21,7 +21,7 @@ CREATE TABLE
 CREATE TABLE
     Quotes (
         qouteID INT,
-        quote VARCHAR(100) UNIQUE,
+        quote VARCHAR(255) UNIQUE,
         champion VARCHAR(20),
         PRIMARY KEY (qouteID),
         FOREIGN KEY (champion) REFERENCES Champions (name)
