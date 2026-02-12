@@ -31,6 +31,7 @@ def getInfo():
     current_table = None
 
     with open(filepath, "r") as fh:
+
         lines = fh.readlines()
 
     for line in lines:
