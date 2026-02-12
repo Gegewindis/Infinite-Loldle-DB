@@ -173,24 +173,31 @@ class App(customtkinter.CTk):
     def main_remove_button_callback(self):
         self.remove_popup_window = customtkinter.CTkToplevel(self)
         self.remove_popup_window.title("Modify")
-        self.remove_popup_window.geometry("300x100")
+        self.remove_popup_window.geometry("400x100")
         self.remove_popup_window.transient(self)
 
-        label = customtkinter.CTkLabel(self.remove_popup_window, text="Whats the primary key?")
+        label = customtkinter.CTkLabel(self.remove_popup_window, text="Whats the primary key? If composite, seperate with a comma")
         label.pack(pady=10)
 
-        self.remove_input_entry = customtkinter.CTkEntry(self.remove_popup_window, placeholder_text="input...", width=172)
+        self.remove_input_entry = customtkinter.CTkEntry(self.remove_popup_window, placeholder_text="key1,key2...", width=172)
         self.remove_input_entry.bind("<Return>", self.remove)
         self.remove_input_entry.pack()
 
 
     def remove(self, event):
+        keys = []
         for i in range(len(self.selected_table_header)):
             if self.selected_table_header[i][2] == "#25709E": #PRIMARY KEY COLOR, might change
-                key = self.selected_table_header[i][0]
-                break
+                keys.append(self.selected_table_header[i][0])
 
-        self.cursor.execute("DELETE FROM " + self.selected_table.get() + " WHERE " + key + " = '" + self.remove_input_entry.get() + "'")
+        keys_input = self.remove_input_entry.get().split(",")
+
+        condition = " WHERE " + keys[0] + " = '" + keys_input[0] + "'"
+        if len(keys) > 1:
+            for i in range(1, len(keys)):
+                condition += " AND " + keys[i] + " = '" + keys_input[i] + "'"
+
+        self.cursor.execute("DELETE FROM " + self.selected_table.get() + condition)
 
         # COLORS THE REMOVED ONE INSTEAD OF RELOADING
         # for j in range(len(self.selected_table_data)):
