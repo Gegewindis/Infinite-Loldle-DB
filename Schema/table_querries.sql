@@ -20,7 +20,7 @@ CREATE TABLE
 
 CREATE TABLE
     Quotes (
-        qouteID INT,
+        qouteID INT AUTO_INCREMENT,
         quote VARCHAR(255) UNIQUE,
         champion VARCHAR(20),
         PRIMARY KEY (qouteID),
@@ -79,7 +79,7 @@ CREATE TABLE
 
 CREATE TABLE
     Games (
-        gameID INT,
+        gameID INT AUTO_INCREMENT,
         score INT,
         type VARCHAR(20), --Int?
         playtime DATE,
