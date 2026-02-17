@@ -71,18 +71,18 @@ CREATE TABLE
 CREATE TABLE
     Users (
         username VARCHAR(20),
-        password VARCHAR(50),
+        passwrd VARCHAR(50),
         email VARCHAR(30) UNIQUE,
         points INT,
         PRIMARY KEY (username)
     );
 
 CREATE TABLE
-    Games (
+    ChangeLog (
         gameID INT AUTO_INCREMENT,
         score INT,
-        type VARCHAR(20), --Int?
-        playtime DATE,
+        changeType VARCHAR(20), --Int?
+        changeTime DATE,
         username VARCHAR(20) UNIQUE,
         PRIMARY KEY (gameID),
         FOREIGN KEY (username) REFERENCES Users (username)

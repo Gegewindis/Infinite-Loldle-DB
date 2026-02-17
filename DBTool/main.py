@@ -74,19 +74,18 @@ class App(customtkinter.CTk):
             
 
             self.mydb = mysql.connector.connect(
-                host= selected_host,
-                user= self.login_entry_user.get(),
-                passwd= self.login_entry_pass.get()
+                host= HOST, #selected_host,
+                user= USER, #self.login_entry_user.get(),
+                passwd= PASSWORD, #self.login_entry_pass.get()
             )
 
             self.login_entry_user.delete(0, "end")
             self.login_entry_pass.delete(0, "end")
-            print("Connection made!")
 
             # Setup for main screen
             self.cursor = self.mydb.cursor()
 
-            self.cursor.execute("USE " + self.login_entry_name.get())
+            self.cursor.execute("USE " + NAME) #self.login_entry_name.get())
             self.cursor.execute("SHOW TABLES")
 
             for element in self.cursor.fetchall():
@@ -116,7 +115,7 @@ class App(customtkinter.CTk):
 
     def main_insert_button_callback(self):
         self.insert_popup_window = customtkinter.CTkToplevel(self)
-        self.insert_popup_window.title("Modify")
+        self.insert_popup_window.title("Insert")
         self.insert_popup_window.geometry("300x500")
         self.insert_popup_window.transient(self)
 
@@ -142,7 +141,7 @@ class App(customtkinter.CTk):
     def insert(self):
         new_data = []
         for entry in self.insert_entries:
-            new_data.append((entry.get()))
+            new_data.append("'" + entry.get() + "'")
 
         attributes = []
         for attr in self.selected_table_header:
@@ -185,7 +184,7 @@ class App(customtkinter.CTk):
 
     def main_remove_button_callback(self):
         self.remove_popup_window = customtkinter.CTkToplevel(self)
-        self.remove_popup_window.title("Modify")
+        self.remove_popup_window.title("Remove")
         self.remove_popup_window.geometry("400x100")
         self.remove_popup_window.transient(self)
 
@@ -241,8 +240,10 @@ class App(customtkinter.CTk):
 
         for column in columnData:
             self.cursor.execute("SELECT MAX(CHAR_LENGTH(" + column[0] + ")) FROM " + self.selected_table.get() + ";")
-            length = self.cursor.fetchall()[0][0]
-            if len(column[0]) > length:
+            test = self.cursor.fetchall()
+            length = test[0][0]
+            
+            if length == None or len(column[0]) > length:
                 length = len(column[0])
 
 
@@ -258,7 +259,7 @@ class App(customtkinter.CTk):
         self.cursor.execute("SELECT * FROM " + choice)
         self.selected_table_data = self.cursor.fetchall()
 
-        current_col_amount = len(self.selected_table_data[0])
+        current_col_amount = len(self.selected_table_header)
         current_row_amount = len(self.selected_table_data)
 
         for i in range(current_col_amount):
