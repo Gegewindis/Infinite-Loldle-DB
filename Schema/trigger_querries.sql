@@ -8,7 +8,7 @@ BEGIN
     VALUES (NEW.points - OLD.points,
     'admin',
     NOW(),
-    OLD.Username);
+    NEW.Username);
 END //
 
 DELIMITER ;

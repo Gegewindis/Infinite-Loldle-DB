@@ -163,6 +163,8 @@ class App(customtkinter.CTk):
 
         
     def main_modify_button_callback(self):
+        if self.selected_widget == None:
+            return
         self.modify_popup_window = customtkinter.CTkToplevel(self)
         self.modify_popup_window.title("Modify")
         self.modify_popup_window.geometry("300x100")
@@ -179,6 +181,8 @@ class App(customtkinter.CTk):
         self.cursor.execute("UPDATE " + self.selected_table.get() + " SET " + self.selected_table_header[self.selected_widget['column']][0] + " = '" + self.modify_input_entry.get() + "' WHERE " + self.selected_table_header[0][0] + " = '" + self.selected_table_data[self.selected_widget['row']][0] + "'")
         self.selected_widget["widget"].config(text=self.modify_input_entry.get())
         self.mydb.commit()
+        self.selected_widget['widget'].config(bg="#FFFFFF")
+        self.selected_widget = None
         self.modify_popup_window.destroy()
 
 

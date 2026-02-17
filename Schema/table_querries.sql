@@ -83,7 +83,7 @@ CREATE TABLE
         score INT,
         changeType VARCHAR(20), --Int?
         changeTime DATE,
-        username VARCHAR(20) UNIQUE,
+        username VARCHAR(20),
         PRIMARY KEY (gameID),
         FOREIGN KEY (username) REFERENCES Users (username)
     );
