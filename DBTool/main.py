@@ -3,6 +3,8 @@ import mysql.connector
 from tkinter import Label
 
 # TEST VAR
+HOST = "localhost"
+NAME = "infloldle"
 USER = "root"
 PASSWORD = "georgeadrian2005@"
 
@@ -10,7 +12,7 @@ class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
         self.geometry("1280x720")
-        self.title("Infinite Loldle DB tool")
+        self.title("DB tool")
         self.selected_widget = None
 
         # Fonts
@@ -32,6 +34,12 @@ class App(customtkinter.CTk):
         # Login Screen Widgets
         self.login_title = customtkinter.CTkLabel(self.login_screen, text="Welcome!", fg_color="transparent", font=self.default_title_font)
         self.login_title.pack(pady=50)
+
+        self.login_entry_host = customtkinter.CTkEntry(self.login_screen, placeholder_text="host", width=172)
+        self.login_entry_host.pack(pady=10)
+
+        self.login_entry_name = customtkinter.CTkEntry(self.login_screen, placeholder_text="name", width=172)
+        self.login_entry_name.pack(pady=10)
 
         self.login_entry_user = customtkinter.CTkEntry(self.login_screen, placeholder_text="user", width=172)
         self.login_entry_user.pack(pady=10)
@@ -60,10 +68,15 @@ class App(customtkinter.CTk):
         
     def login_button_callbck(self):
         try:
+            selected_host = "localhost"
+            if self.login_entry_host.get() != "":
+                selected_host = self.login_entry_host.get()
+            
+
             self.mydb = mysql.connector.connect(
-                host="localhost",
-                user= USER, #self.login_entry_user.get(),
-                passwd= PASSWORD #self.login_entry_pass.get()
+                host= selected_host,
+                user= self.login_entry_user.get(),
+                passwd= self.login_entry_pass.get()
             )
 
             self.login_entry_user.delete(0, "end")
@@ -73,7 +86,7 @@ class App(customtkinter.CTk):
             # Setup for main screen
             self.cursor = self.mydb.cursor()
 
-            self.cursor.execute("USE infloldle")
+            self.cursor.execute("USE " + self.login_entry_name.get())
             self.cursor.execute("SHOW TABLES")
 
             for element in self.cursor.fetchall():
