@@ -38,3 +38,15 @@ def region_desc(name):
 
 def update_points(username, points):
     return "NOT IMPLEMENTED"
+
+
+def selected_champ(name):
+    return "NOT IMPLEMENTED"
+
+
+def random_quoute():
+    return "NOT IMPLEMENTED"
+
+
+def random_ability():
+    return "NOT IMPLEMENTED"

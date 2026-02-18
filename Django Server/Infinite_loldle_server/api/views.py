@@ -1,10 +1,9 @@
 from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
-from .services import create_user, check_user, random_champ, species_desc, region_desc, update_points
+from .services import create_user, check_user, random_champ, species_desc, region_desc, update_points, selected_champ, random_quoute, random_ability
+
 # Create your views here.
-
-
 def test_api(request):
     return JsonResponse({
         "message": "Backend connected successfully!"
@@ -20,10 +19,10 @@ def register_user(request):
 
         try:
             create_user(username, password, email)
+            return JsonResponse({"message": "User successfully registered"})
         except:
-            return JsonResponse({"message": "User was not successfully registered"})
-
-        return JsonResponse({"message": "User successfully registered"})
+            return JsonResponse({"message": "There is already an existing user with that username or email"})
+        
     return JsonResponse({"error": "Invalid request method"}, status=405)
 
 @csrf_exempt
@@ -33,15 +32,16 @@ def login_user(request):
         username = data['username']
         password = data['password']
 
-        databaseResponse = check_user(username, password)[0][0]
-
-        if databaseResponse == username:
-            return JsonResponse({"message": "User logged in successfully"})
-        return JsonResponse({"message": "User did not log in successfully"})
+        try:
+            databaseResponse = check_user(username, password)[0][0]
+            if databaseResponse == username:
+                return JsonResponse({"message": "User logged in successfully"})
+        except:
+            return JsonResponse({"message": "User did not log in successfully"})
     return JsonResponse({"error": "Invalid request method"})
 
 
-def get_champ(request):
+def get_random_champ(request):
     if request.method == "GET":
         champion = random_champ()
         return JsonResponse({"message": champion})
@@ -78,3 +78,33 @@ def update_user_points(request):
     return JsonResponse({"error": "Invalid request method"}, status=405)
 
 
+def get_champ_info(request):
+    if request.method == "GET":
+        name = request.GET.get("name")
+
+        try:
+            info = selected_champ(name)
+            return JsonResponse({"message": info})
+        except:
+            return JsonResponse({"message": None})
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+def get_random_quote(request):
+    if request.method == "GET":
+        try:
+            quote = random_quoute()
+            return JsonResponse({"message": quote})
+        except:
+            return JsonResponse({"message": None})
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+def get_random_ability(request):
+    if request.method == "GET":
+        try:
+            ability = random_ability()
+            return JsonResponse({"message": ability})
+        except:
+            return JsonResponse({"message": None})
+    return JsonResponse({"error": "Invalid request method"}, status=405)
