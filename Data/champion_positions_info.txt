@@ -93,6 +93,8 @@ ChampPositions
 'Miss Fortune','Bot'
 'Mordekaiser','Top'
 'Morgana','Sup'
+'Trundle','Top'
+'Trundle','Jng'
 'Naafiri','Mid'
 'Nasus','Top'
 'Nautilus','Sup'
