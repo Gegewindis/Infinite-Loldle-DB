@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
-from .services import create_user, check_user, random_champ, species_desc, region_desc, update_points, selected_champ, random_quoute, random_ability
+from .services import create_user, check_user, random_champ, species_desc, region_desc, update_points, selected_champ, random_quoute, random_ability, check_name, leaderboard_info
 
 # Create your views here.
 def test_api(request):
@@ -43,8 +43,13 @@ def login_user(request):
 
 def get_random_champ(request):
     if request.method == "GET":
-        champion = random_champ()
-        return JsonResponse({"message": champion})
+        try:
+            champ_name = random_champ()
+            champ_info = selected_champ(champ_name)
+            return JsonResponse({"message": champ_info})
+        except:
+
+            return JsonResponse({"message": None})
     return JsonResponse({"error": "Invalid request method"})
 
 
@@ -68,7 +73,7 @@ def update_user_points(request):
     if request.method == "POST":
         data = json.loads(request.body)
         username = data['username']
-        points = data['points']
+        points = data['resPoints']
     
         try:
             update_points(username, points)
@@ -107,4 +112,25 @@ def get_random_ability(request):
             return JsonResponse({"message": ability})
         except:
             return JsonResponse({"message": None})
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+def check_existing_champ(request):
+    if request.method == "GET":
+        name = request.GET.get("name")
+
+        existing = check_name(name)
+        return JsonResponse({"message": existing})
+
+        
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+def get_leaderboard_info(request):
+    if request.method == "GET":
+
+        info = leaderboard_info()
+        return JsonResponse({"message": info})
+
+        
     return JsonResponse({"error": "Invalid request method"}, status=405)

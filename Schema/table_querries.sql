@@ -82,7 +82,7 @@ CREATE TABLE
         gameID INT AUTO_INCREMENT,
         score INT,
         changeType VARCHAR(20), --Int?
-        changeTime DATE,
+        changeTime TIMESTAMP,
         username VARCHAR(20),
         PRIMARY KEY (gameID),
         FOREIGN KEY (username) REFERENCES Users (username)

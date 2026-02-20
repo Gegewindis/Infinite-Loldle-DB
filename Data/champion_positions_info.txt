@@ -154,6 +154,7 @@ ChampPositions
 'Veigar','Mid'
 'Vel''Koz','Mid'
 'Vel''Koz','Sup'
+'Vex','Mid'
 'Vi','Jng'
 'Viego','Jng'
 'Viktor','Mid'
