@@ -12,12 +12,12 @@ def create_user(username, password, email):
           
 def check_user(username, password):
     """
-    Checks for a user information in database adn returns their name
+    Checks for a user information in database and returns their name
     """
     with connection.cursor() as cursor:
         cursor.execute("""
                        SELECT username FROM Users 
-                       WHERE username = %s AND passwrd = %s;
+                       WHERE username = %s AND passwrd = %s
                        """, [username, password])
         return cursor.fetchall()
         
@@ -116,7 +116,7 @@ def selected_champ(name):
 
 def random_quoute():
     """
-    Returns a random quote and the champions name a
+    Returns a random quote and the champions name
     """
     with connection.cursor() as cursor:
         cursor.execute("""
@@ -129,7 +129,7 @@ def random_quoute():
 
 def random_ability():
     """
-    Returns a random ability and the tyoe and champions name a
+    Returns a random ability and the tyoe and champions name
     """
     with connection.cursor() as cursor:
         cursor.execute("""
@@ -142,7 +142,7 @@ def random_ability():
 
 def leaderboard_info():
     """
-    Returns a random ability and the tyoe and champions name a
+    Returns the username, points and the time of last played game
     """
     with connection.cursor() as cursor:
         cursor.execute("""
