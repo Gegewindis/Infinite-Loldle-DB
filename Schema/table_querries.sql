@@ -2,8 +2,8 @@
 CREATE TABLE
     Champions (
         name VARCHAR(20),
-        gender VARCHAR(10), --Int?
-        rangeType VARCHAR(10), --Int?
+        gender VARCHAR(10),
+        rangeType VARCHAR(10),
         resource VARCHAR(20),
         releaseYear YEAR,
         PRIMARY KEY (name)
@@ -12,7 +12,7 @@ CREATE TABLE
 CREATE TABLE
     Abilities (
         name VARCHAR(30),
-        type VARCHAR(20), --int
+        type VARCHAR(20),
         champion VARCHAR(20),
         PRIMARY KEY (name),
         FOREIGN KEY (champion) REFERENCES Champions (name)
@@ -81,7 +81,7 @@ CREATE TABLE
     ChangeLog (
         gameID INT AUTO_INCREMENT,
         score INT,
-        changeType VARCHAR(20), --Int?
+        changeType VARCHAR(20),
         changeTime TIMESTAMP,
         username VARCHAR(20),
         PRIMARY KEY (gameID),

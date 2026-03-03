@@ -65,7 +65,6 @@ class App(customtkinter.CTk):
 
         self.main_remove_button = customtkinter.CTkButton(self.buttons_frame, text="remove", font=self.default_text_font, command=self.main_remove_button_callback)
 
-        
     def login_button_callbck(self):
         try:
             selected_host = "localhost"
@@ -106,12 +105,10 @@ class App(customtkinter.CTk):
         except mysql.connector.Error as err:
             print("Error:", err)
     
-
     def main_logout_button_callback(self):
             # Switch screen
             self.main_screen.pack_forget()
             self.login_screen.pack(fill="both", expand=True)
-
 
     def main_insert_button_callback(self):
         self.insert_popup_window = customtkinter.CTkToplevel(self)
@@ -136,8 +133,7 @@ class App(customtkinter.CTk):
 
         self.insert_submit = customtkinter.CTkButton(frame, text="Submit", command=self.insert, width=80)
         self.insert_submit.grid(row= i * 3 + 2, pady=20)
-                                                     
-                                                  
+                                                                                     
     def insert(self):
         new_data = []
         for entry in self.insert_entries:
@@ -161,7 +157,6 @@ class App(customtkinter.CTk):
 
         self.main_dropdown_callback(self.selected_table.get())
 
-        
     def main_modify_button_callback(self):
         if self.selected_widget == None:
             return
@@ -185,7 +180,6 @@ class App(customtkinter.CTk):
         self.selected_widget = None
         self.modify_popup_window.destroy()
 
-
     def main_remove_button_callback(self):
         self.remove_popup_window = customtkinter.CTkToplevel(self)
         self.remove_popup_window.title("Remove")
@@ -198,7 +192,6 @@ class App(customtkinter.CTk):
         self.remove_input_entry = customtkinter.CTkEntry(self.remove_popup_window, placeholder_text="key1,key2...", width=172)
         self.remove_input_entry.bind("<Return>", self.remove)
         self.remove_input_entry.pack()
-
 
     def remove(self, event):
         keys = []
@@ -226,8 +219,6 @@ class App(customtkinter.CTk):
         self.remove_popup_window.destroy()
 
         self.main_dropdown_callback(self.selected_table.get())
-
-
 
     def main_dropdown_callback(self, choice):
         for widget in self.tables_frame.winfo_children():
@@ -275,7 +266,6 @@ class App(customtkinter.CTk):
                 label.grid(row=j + 1, column=i)
                 label.bind("<Button-1>", self.on_label_click)
 
-
     def on_label_click(self, event):
         if self.selected_widget:
             self.selected_widget["widget"].config(bg="#FFFFFF")
@@ -287,7 +277,6 @@ class App(customtkinter.CTk):
         self.selected_widget["row"] = info["row"] - 1
         self.selected_widget["column"] = info["column"]
         self.selected_widget["widget"].config(bg="lightblue")
-
 
 app = App()
 app.mainloop()

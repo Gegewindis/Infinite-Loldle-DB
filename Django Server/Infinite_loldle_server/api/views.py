@@ -40,7 +40,6 @@ def login_user(request):
             return JsonResponse({"message": "User did not log in successfully"})
     return JsonResponse({"error": "Invalid request method"})
 
-
 def get_random_champ(request):
     if request.method == "GET":
         try:
@@ -52,14 +51,12 @@ def get_random_champ(request):
             return JsonResponse({"message": None})
     return JsonResponse({"error": "Invalid request method"})
 
-
 def get_species_desc(request):
     if request.method == "GET":
         name = request.GET.get("name")
         description = species_desc(name)
         return JsonResponse({"message": description})
     return JsonResponse({"error": "Invalid request method"})
-
 
 def get_region_desc(request):
     if request.method == "GET":
@@ -70,7 +67,7 @@ def get_region_desc(request):
 
 @csrf_exempt
 def update_user_points(request):
-    if request.method == "POST":
+    if request.method == "PUT":
         data = json.loads(request.body)
         username = data['username']
         points = data['resPoints']
@@ -81,7 +78,6 @@ def update_user_points(request):
         except:
             return JsonResponse({"message": "Points not successfully updated"})
     return JsonResponse({"error": "Invalid request method"}, status=405)
-
 
 def get_champ_info(request):
     if request.method == "GET":
@@ -94,7 +90,6 @@ def get_champ_info(request):
             return JsonResponse({"message": None})
     return JsonResponse({"error": "Invalid request method"}, status=405)
 
-
 def get_random_quote(request):
     if request.method == "GET":
         try:
@@ -103,7 +98,6 @@ def get_random_quote(request):
         except:
             return JsonResponse({"message": None})
     return JsonResponse({"error": "Invalid request method"}, status=405)
-
 
 def get_random_ability(request):
     if request.method == "GET":
@@ -114,17 +108,13 @@ def get_random_ability(request):
             return JsonResponse({"message": None})
     return JsonResponse({"error": "Invalid request method"}, status=405)
 
-
 def check_existing_champ(request):
     if request.method == "GET":
         name = request.GET.get("name")
 
         existing = check_name(name)
         return JsonResponse({"message": existing})
-
-        
     return JsonResponse({"error": "Invalid request method"}, status=405)
-
 
 def get_leaderboard_info(request):
     if request.method == "GET":

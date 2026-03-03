@@ -4,19 +4,16 @@ def create_user(username, password, email):
     """
     Creates a user in the database
     """
-
     with connection.cursor() as cursor:
         cursor.execute("""
                        INSERT INTO Users (username, passwrd, email, points)
                        VALUES (%s, %s, %s, %s)
                        """, [username, password, email, 0])
-        
-        
+          
 def check_user(username, password):
     """
     Checks for a user information in database adn returns their name
     """
-
     with connection.cursor() as cursor:
         cursor.execute("""
                        SELECT username FROM Users 
@@ -24,7 +21,6 @@ def check_user(username, password):
                        """, [username, password])
         return cursor.fetchall()
         
-
 def random_champ():
     """
     Returns a random champion name
@@ -38,7 +34,6 @@ def random_champ():
                         """)
         return cursor.fetchall()
 
-
 def species_desc(name):
     """
     Returns a species description
@@ -50,8 +45,7 @@ def species_desc(name):
                         WHERE name = %s
                         """, [name])
         return cursor.fetchall()
-
-
+    
 def region_desc(name):
     """
     Returns a region description
@@ -64,14 +58,12 @@ def region_desc(name):
                         """, [name])
         return cursor.fetchall()
 
-
 def update_points(username, points):
     """
     Adds points to a user
     """
     with connection.cursor() as cursor:
         cursor.execute("CALL AddPoints(%s, %s)", [username, points])
-
 
 def check_name(name):
     """
@@ -87,7 +79,6 @@ def check_name(name):
             return False
         return True
     
-
 def selected_champ(name):
     """
     Returns a champs info
@@ -127,7 +118,6 @@ def random_quoute():
     """
     Returns a random quote and the champions name a
     """
-
     with connection.cursor() as cursor:
         cursor.execute("""
                         SELECT quote, champion
@@ -137,12 +127,10 @@ def random_quoute():
                         """)
         return cursor.fetchall()
 
-
 def random_ability():
     """
     Returns a random ability and the tyoe and champions name a
     """
-
     with connection.cursor() as cursor:
         cursor.execute("""
                         SELECT name, type, champion
@@ -152,12 +140,10 @@ def random_ability():
                         """)
         return cursor.fetchall()
 
-
 def leaderboard_info():
     """
     Returns a random ability and the tyoe and champions name a
     """
-
     with connection.cursor() as cursor:
         cursor.execute("""
                         SELECT u.username, u.points, c.changeTime 
