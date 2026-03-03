@@ -1,6 +1,5 @@
 import mysql.connector
 
-
 def insertInfo(info: dict, cursor: mysql.connector.cursor) -> None:
     for table in info.keys():
         cursor.execute("DESCRIBE " + table)
@@ -14,7 +13,6 @@ def insertInfo(info: dict, cursor: mysql.connector.cursor) -> None:
         for set in info[table]:
             print("INSERT INTO " + table + " (" + attributes + ") VALUES (" + set + ")")
             cursor.execute("INSERT INTO " + table + " (" + attributes + ") VALUES (" + set + ")")
-
 
 def getInfo(filepath: str) -> dict:
     info = {}
@@ -38,7 +36,6 @@ def getInfo(filepath: str) -> dict:
 
     return info
 
-
 def CSVToMySQL(filepaths: list[str], DBName: str, DBPass: str) -> None:
     mydb = mysql.connector.connect(host="localhost", user="root", passwd=DBPass)
     cursor = mydb.cursor()
@@ -53,4 +50,6 @@ def CSVToMySQL(filepaths: list[str], DBName: str, DBPass: str) -> None:
 
 
 if __name__ == "__main__":
-    CSVToMySQL(["Data/champions_info.txt", "Data/abilities_info.txt", "Data/quotes_info.txt", "Data/regions_info.txt", "Data/species_info.txt", "Data/champion_positions_info.txt", "Data/champ_species_info.txt", "Data/champ_region_info.txt"], "infloldle", "georgeadrian2005@")
+    DBName = "infloldle"
+    DBPass = "georgeadrian2005@"
+    CSVToMySQL(["Data/champions_info.txt", "Data/abilities_info.txt", "Data/quotes_info.txt", "Data/regions_info.txt", "Data/species_info.txt", "Data/champion_positions_info.txt", "Data/champ_species_info.txt", "Data/champ_region_info.txt"], DBName, DBPass)
