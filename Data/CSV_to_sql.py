@@ -51,5 +51,5 @@ def CSVToMySQL(filepaths: list[str], DBName: str, DBPass: str) -> None:
 
 if __name__ == "__main__":
     DBName = "infloldle"
-    DBPass = "georgeadrian2005@"
+    DBPass = "localtestingpass123@"
     CSVToMySQL(["Data/champions_info.txt", "Data/abilities_info.txt", "Data/quotes_info.txt", "Data/regions_info.txt", "Data/species_info.txt", "Data/champion_positions_info.txt", "Data/champ_species_info.txt", "Data/champ_region_info.txt"], DBName, DBPass)
