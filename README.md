@@ -2,9 +2,9 @@
 The backend, including the database and the API, for the Infinite Loldle website. Built with django and mysql.
 
 ## :wrench: Technologies
-* Django
-* mySQL
-* Python
+* ```Django```
+* ```mySQL```
+* ```Python```
 
 ## :rocket: Features
 * REST API for the website to send requests to the database
@@ -24,8 +24,10 @@ Make sure to have the following python modules installed for the server to work 
 
 ## :vertical_traffic_light: Setting up DB and running API
 1. Clone the repository to your local machine.
-2. Make sure to install all of the above requirements.
+2. Make sure to install all of the requirements above.
 3. Go to /Schema. There you will find the schema needed for your database.
-4. Go to */Data/CSV_to_sql*, configure the DBName and DBPass and run the script. This will insert the data into the DB.
-5. After the DB is set up you have to Configure the DB name and password in the django server settings found at */Django Server/infinite_loldle_server/infinite_loldle_server/settings.py*.
-6. Lastly you have traverse to */Django Server/infinite_loldle_server* and run the command **python manage.py runserver** and the API should be up and running, ready to receive queries.
+4. Go to ```/Data/CSV_to_sql```, configure the DBName and DBPass and run the script. This will insert the data into the DB.
+5. After the DB is set up you have to Configure the DB name and password in the django server settings found at ```/Django Server/infinite_loldle_server/infinite_loldle_server/settings.py```.
+6. Lastly you have traverse to the ```/Django Server/infinite_loldle_server``` directory and run the command ```python manage.py runserver``` . The API should now be up and running, ready to receive queries from the website.
+
+
